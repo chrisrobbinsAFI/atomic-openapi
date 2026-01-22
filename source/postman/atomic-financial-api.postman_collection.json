@@ -1,0 +1,2216 @@
+{
+  "info": {
+    "_postman_id": "061d703f-9d62-4513-8ed5-bfb7d9d5d843",
+    "name": "Atomic Financial API",
+    "description": "Documentation for the API surface of the Atomic Financial Public API.\n\n# Postman Workspace\n\n## Structure\n\nThis Workspaces is grouped into folders. Each folder contains related functionality, which you can use to explore areas of the API:\n\n- creating an access token\n    \n- using our company search to create a typeahead experience\n    \n- userlink or employerlink data integration\n    \n- continuous access via linked accounts\n    \n\nEach folder will have information in the documentation page of the folder detailing what is possible with the Requests in that folder.  \nThere are many requests which take advantage both collection level and environment level variable. Some even have tests which will grab data from a response and store them in the appropriate variable for reuse. The environment variables are limited to data which will be environment specific; urls, api keys and secrets, tokens, etc.  \nWe have provided both a Sandbox and Production environment which contain all variables we have used to create the Workspace.\n\n### Getting Started\n\n1. Get your API key and secret for your environment from the \\[Atomic Console\\]([https://console.atomicfi.com](https://console.atomicfi.com])).\n    \n2. Store these values in the appropriate environment variables for creating an access token and any API requests which can be made using the API key and secret pair as opposed to the publicToken.\n    \n3. Run the Create Access Token Request to populate the `publicToken` variable in order to set this value for future calls to the API.\n    \n\n### More information\n\nYou can find more detailed information on the \\[Atomic Financial Docs site\\]([https://docs.atomicfi.com](https://docs.atomicfi.com)).  \nPlease leave comments here in the Workspace if you have any questions or concerns.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "47505086",
+    "_collection_link": "https://go.postman.co/collection/47505086-061d703f-9d62-4513-8ed5-bfb7d9d5d843?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Access Token",
+      "item": [
+        {
+          "name": "UserLink",
+          "item": [
+            {
+              "name": "Create Access Token - Deposit",
+              "event": [
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      ""
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                },
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "const body = pm.response.json()",
+                      "",
+                      "pm.environment.set(\"publicToken\", body.data.publicToken);",
+                      ""
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "noauth"
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "x-api-key",
+                    "value": "{{x-api-key}}",
+                    "description": "API Key for your Atomic account",
+                    "type": "text"
+                  },
+                  {
+                    "key": "x-api-secret",
+                    "value": "{{x-api-secret}}",
+                    "description": "API Secret for your Atomic account",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"identifier\": \"{{identifier}}\",\n  \"accounts\": [\n    {\n      \"accountNumber\":\"111111111\",\n      \"routingNumber\":\"222222222\",\n      \"type\": \"checking\"\n    }\n  ],\n  \"tokenLifetime\": 2592000\n}"
+                },
+                "url": {
+                  "raw": "{{apiUrl}}/access-token",
+                  "host": [
+                    "{{apiUrl}}"
+                  ],
+                  "path": [
+                    "access-token"
+                  ]
+                },
+                "description": "# Create an access token for direct deposit\n\nGenerates an access token that will automatically become invalid after 30 minutes.\n\n## Header Values\n\n- `x-api-key`\n    \n- `x-api-secret`\n    \n\nThese values are available in the [Console Settings page](https://console.atomicfi.com/settings/credentials) under Credentials.\n\n## Body Values\n\n#### Required:\n\n- `identifier` - unique ID from your system - UUID or other\n    \n- `accounts.accountNumber` - account number for the end user's account for deposit allocation\n    \n- `accounts.routingNumber` - routing number for your institution\n    \n- `type` - one of `\"checking\"` or `\"savings\"`\n    \n\n#### Optional:\n\n- `title` - title for account type or other data about account\n    \n\n## Variables\n\nThis request runs a test after successful completion which stores the `publicToken` in an environment variable to be used in subsequent requests."
+              },
+              "response": []
+            },
+            {
+              "name": "Create Access Token - Verify",
+              "event": [
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      ""
+                    ],
+                    "type": "text/javascript"
+                  }
+                },
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "const body = pm.response.json()",
+                      "",
+                      "pm.environment.set(\"publicToken\", body.data.publicToken);",
+                      ""
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "noauth"
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "name": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "x-api-key",
+                    "value": "{{x-api-key}}",
+                    "description": "API Key for your Atomic account",
+                    "type": "text"
+                  },
+                  {
+                    "key": "x-api-secret",
+                    "value": "{{x-api-secret}}",
+                    "description": "API Secret for your Atomic account",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"identifier\": \"{{identifier}}\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{apiUrl}}/access-token",
+                  "host": [
+                    "{{apiUrl}}"
+                  ],
+                  "path": [
+                    "access-token"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Create Access Token - Deposit w/ JWE",
+              "event": [
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      ""
+                    ],
+                    "type": "text/javascript",
+                    "packages": {}
+                  }
+                },
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "const body = pm.response.json()",
+                      "",
+                      "pm.environment.set(\"publicToken\", body.data.publicToken);",
+                      ""
+                    ],
+                    "type": "text/javascript",
+                    "packages": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "noauth"
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "x-api-key",
+                    "value": "{{x-api-key}}",
+                    "description": "API Key for your Atomic account"
+                  },
+                  {
+                    "key": "x-api-secret",
+                    "value": "{{x-api-secret}}",
+                    "description": "API Secret for your Atomic account"
+                  },
+                  {
+                    "key": "x-enc-key-id",
+                    "value": ""
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"identifier\": \"{{identifier}}\",\n  \"accounts\": [\n    {\n      \"accountNumber\": \"1111111111\",\n      \"routingNumber\": \"222222222\",\n      \"type\": \"checking\"\n    }\n  ]\n}"
+                },
+                "url": {
+                  "raw": "{{apiUrl}}/access-token",
+                  "host": [
+                    "{{apiUrl}}"
+                  ],
+                  "path": [
+                    "access-token"
+                  ]
+                },
+                "description": "# Create an access token for direct deposit\n\nGenerates an access token that will automatically become invalid after 30 minutes.\n\n## Header Values\n\n- `x-api-key`\n- `x-api-secret`\n    \n\nThese values are available in the [Console Settings page](https://console.atomicfi.com/settings/credentials) under Credentials.\n\n## Body Values\n\n#### Required:\n\n- `identifier` - unique ID from your system - UUID or other\n- `accounts.accountNumber` - account number for the end user's account for deposit allocation\n- `accounts.routingNumber` - routing number for your institution\n- `type` - one of `\"checking\"` or `\"savings\"`\n    \n\n#### Optional:\n\n- `title` - title for account type or other data about account\n    \n\n## Variables\n\nThis request runs a test after successful completion which stores the `publicToken` in an environment variable to be used in subsequent requests."
+              },
+              "response": []
+            },
+            {
+              "name": "Create Access Token - Deposit - Multiple accounts",
+              "event": [
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      ""
+                    ],
+                    "type": "text/javascript"
+                  }
+                },
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "const body = pm.response.json()",
+                      "",
+                      "pm.environment.set(\"publicToken\", body.data.publicToken);",
+                      ""
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "noauth"
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "name": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "x-api-key",
+                    "value": "{{x-api-key}}",
+                    "description": "API Key for your Atomic account",
+                    "type": "text"
+                  },
+                  {
+                    "key": "x-api-secret",
+                    "value": "{{x-api-secret}}",
+                    "description": "API Secret for your Atomic account",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n\t\"identifier\": \"{{identifier}}\",\n\t\"accounts\": [\n\t\t{\n\t\t\t\"accountNumber\": \"220000000\",\n\t\t\t\"routingNumber\": \"110000000\",\n\t\t\t\"type\": \"checking\"\n\t\t},\n        {\n\t\t\t\"accountNumber\": \"220000001\",\n\t\t\t\"routingNumber\": \"110000000\",\n\t\t\t\"type\": \"savings\"\n\t\t}\n\t]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{apiUrl}}/access-token",
+                  "host": [
+                    "{{apiUrl}}"
+                  ],
+                  "path": [
+                    "access-token"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Create  a Transact URL - Deposit",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "const body = pm.response.json()",
+                      "",
+                      "const base64String = btoa(JSON.stringify(",
+                      "    {",
+                      "        token: body.data.publicToken,",
+                      "        tasks: [",
+                      "\t\t\t{",
+                      "        \t\toperation: \"deposit\"",
+                      "\t\t\t}",
+                      "\t\t],",
+                      "\t\tdeeplink: {",
+                      "\t\t\tstep: 'search-company'",
+                      "\t\t},",
+                      "\t\thandoff: ['exit-prompt']",
+                      "    }",
+                      "))",
+                      "",
+                      "pm.environment.set(\"transactUrlWithToken\", `${pm.environment.get(\"transactUrl\")}/initialize/${base64String}`)",
+                      "",
+                      "pm.environment.set(\"publicToken\", body.data.publicToken)",
+                      "",
+                      "console.log(pm.environment.get(\"transactUrlWithToken\"))"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {}
+                  }
+                },
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      ""
+                    ],
+                    "type": "text/javascript",
+                    "packages": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "noauth"
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "x-api-key",
+                    "value": "{{x-api-key}}",
+                    "description": "API Key for your Atomic account",
+                    "type": "text"
+                  },
+                  {
+                    "key": "x-api-secret",
+                    "value": "{{x-api-secret}}",
+                    "description": "API Secret for your Atomic account",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"publicToken\": \"{{publicToken}}\",\n  \"tasks\": [\n    {\n      \"operation\": \"deposit\"\n    }\n  ]\n}"
+                },
+                "url": {
+                  "raw": "https://transact.atomicfi.com/initialize",
+                  "protocol": "https",
+                  "host": [
+                    "transact",
+                    "atomicfi",
+                    "com"
+                  ],
+                  "path": [
+                    "initialize"
+                  ]
+                },
+                "description": "## Usage\n\nThis endpoint makes a call to `/access-token` to create a publicToken for a Deposit use case.\n\nThe Test in this Request then grabs the publicToken from the Response, stringifies and base64 encodes a config object, and builds a URL. This URL can be used to instantiate Transact. It is printed to the Postman Console and stored in the `transactUrlWithToken`environment variable. Copy and paste this string into the URL bar of a browser to launch Transact.\n\nThis is very useful for testing variations of the config object and launching Transact outside of your application."
+              },
+              "response": []
+            },
+            {
+              "name": "Create a Transact URL - Verify",
+              "event": [
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      ""
+                    ],
+                    "type": "text/javascript",
+                    "packages": {}
+                  }
+                },
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "const body = pm.response.json()",
+                      "",
+                      "const base64String = btoa(JSON.stringify(",
+                      "    {",
+                      "        token: body.data.publicToken,",
+                      "\t\ttasks: [",
+                      "\t\t\t{",
+                      "        \t\tproduct: \"verify\"",
+                      "\t\t\t}",
+                      "\t\t],",
+                      "\t\t\"deeplink\": {",
+                      "\t\t\t\"step\": \"search-company\"",
+                      "\t\t},",
+                      "\t\t\"inSdk\": true,",
+                      "\t\t      \"platform\": {",
+                      "        \"name\": \"browser\",",
+                      "        \"sdkVersion\": \"3.0.0\",",
+                      "        \"systemVersion\": \"Win32-\"",
+                      "      },",
+                      "    }",
+                      "))",
+                      "",
+                      "pm.environment.set(\"transactUrlWithToken\", `${pm.environment.get(\"transactUrl\")}/initialize/${base64String}`)",
+                      "",
+                      "pm.environment.set(\"publicToken\", body.data.publicToken)",
+                      "",
+                      "console.log(pm.environment.get(\"transactUrlWithToken\"))"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "noauth"
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "name": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "x-api-key",
+                    "value": "{{x-api-key}}",
+                    "description": "API Key for your Atomic account",
+                    "type": "text"
+                  },
+                  {
+                    "key": "x-api-secret",
+                    "value": "{{x-api-secret}}",
+                    "description": "API Secret for your Atomic account",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n\t\"identifier\": \"{{identifier}}\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{apiUrl}}/access-token",
+                  "host": [
+                    "{{apiUrl}}"
+                  ],
+                  "path": [
+                    "access-token"
+                  ]
+                },
+                "description": "## Usage\n\nThis endpoint makes a call to `/access-token` to create a publicToken for a Verify use case.\n\nThe Test in this Request then grabs the publicToken from the Response, stringifies and base64 encodes a config object, and builds a URL. This URL can be used to instantiate Transact. It is printed to the Postman Console and stored in the `transactUrlWithToken`environment variable. Copy and paste this string into the URL bar of a browser to launch Transact.\n\nThis is very useful for testing variations of the config object and launching Transact outside of your application."
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "PayLink",
+          "item": [
+            {
+              "name": "Create Access Token - Switch",
+              "event": [
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      ""
+                    ],
+                    "type": "text/javascript",
+                    "packages": {}
+                  }
+                },
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "const body = pm.response.json()",
+                      "",
+                      "pm.environment.set(\"publicToken\", body.data.publicToken);",
+                      ""
+                    ],
+                    "type": "text/javascript",
+                    "packages": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "noauth"
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "x-api-key",
+                    "value": "{{x-api-key}}",
+                    "description": "API Key for your Atomic account"
+                  },
+                  {
+                    "key": "x-api-secret",
+                    "value": "{{x-api-secret}}",
+                    "description": "API Secret for your Atomic account"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n\t\"identifier\": \"{{identifier}}\",\n\t\"identity\": {\n\t\t\"firstName\": \"Jane\",\n\t\t\"lastName\": \"Doe\",\n\t\t\"postalCode\": \"12345\",\n\t\t\"address\": \"123 Lane St\",\n\t\t\"address2\": \"Apt 987\",\n\t\t\"city\": \"Provo\",\n\t\t\"state\": \"UT\",\n\t\t\"phone\": \"8011234576\",\n\t\t\"email\": \"jane@example.com\"\n\t},\n\t\"accounts\": [\n\t\t{\n\t\t\t\"accountNumber\": \"1111111111\",\n\t\t\t\"routingNumber\": \"222222222\",\n\t\t\t\"type\": \"checking\",\n\t\t\t\"title\": \"Premier Plus Checking\"\n\t\t}\n\t],\n\t\"cards\": [\n\t\t{\n\t\t\t\"title\": \"Mastercard Super Card\",\n\t\t\t\"brand\": \"masterdard\",\n\t\t\t\"number\": \"4242424242424242\",\n\t\t\t\"expiry\": \"12/23\",\n\t\t\t\"cvv\": \"123\"\n\t\t}\n\t]\n}"
+                },
+                "url": {
+                  "raw": "{{paylinkApiUrl}}/access-token",
+                  "host": [
+                    "{{paylinkApiUrl}}"
+                  ],
+                  "path": [
+                    "access-token"
+                  ]
+                },
+                "description": "# Create an access token for PayLink Switch\n\nGenerates an access token that will automatically become invalid after 30 minutes.\n\n## Header Values\n\n- `x-api-key`\n    \n- `x-api-secret`\n    \n\nThese values are available in the [Console Settings page](https://console.atomicfi.com/settings/credentials) under Credentials.\n\n## Variables\n\nThis request runs a test after successful completion which stores the `publicToken` in an environment variable to be used in subsequent requests."
+              },
+              "response": []
+            },
+            {
+              "name": "Create  Access Token - Manage",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "const body = pm.response.json()",
+                      "",
+                      "pm.environment.set(\"publicToken\", body.data.publicToken)",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "type": "text/javascript",
+                    "packages": {}
+                  }
+                },
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      ""
+                    ],
+                    "type": "text/javascript",
+                    "packages": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "noauth"
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "x-api-key",
+                    "value": "{{x-api-key}}",
+                    "description": "API Key for your Atomic account"
+                  },
+                  {
+                    "key": "x-api-secret",
+                    "value": "{{x-api-secret}}",
+                    "description": "API Secret for your Atomic account"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n\t\"identifier\": \"{{identifier}}\",\n\t\"identity\": {\n\t\t\"firstName\": \"Jane\",\n\t\t\"lastName\": \"Doe\",\n\t\t\"postalCode\": \"12345\",\n\t\t\"address\": \"123 Lane St\",\n\t\t\"address2\": \"Apt 987\",\n\t\t\"city\": \"Provo\",\n\t\t\"state\": \"UT\",\n\t\t\"phone\": \"8011234576\",\n\t\t\"email\": \"jane@example.com\"\n\t},\n\t\"accounts\": [\n\t\t{\n\t\t\t\"accountNumber\": \"1111111111\",\n\t\t\t\"routingNumber\": \"222222222\",\n\t\t\t\"type\": \"checking\",\n\t\t\t\"title\": \"Premier Plus Checking\"\n\t\t}\n\t],\n\t\"cards\": [\n\t\t{\n\t\t\t\"title\": \"Mastercard Super Card\",\n\t\t\t\"brand\": \"masterdard\",\n\t\t\t\"number\": \"4242424242424242\",\n\t\t\t\"expiry\": \"12/23\",\n\t\t\t\"cvv\": \"123\"\n\t\t}\n\t]\n}"
+                },
+                "url": {
+                  "raw": "{{apiUrl}}/access-token",
+                  "host": [
+                    "{{apiUrl}}"
+                  ],
+                  "path": [
+                    "access-token"
+                  ]
+                },
+                "description": "# Create an access token for PayLink Manage\n\nGenerates an access token that will automatically become invalid after 30 minutes.\n\n## Header Values\n\n- `x-api-key`\n    \n- `x-api-secret`\n    \n\nThese values are available in the [Console Settings page](https://console.atomicfi.com/settings/credentials) under Credentials.\n\n## Variables\n\nThis request runs a test after successful completion which stores the `publicToken` in an environment variable to be used in subsequent requests."
+              },
+              "response": []
+            },
+            {
+              "name": "Create Access Token - PayLink JIT flow",
+              "event": [
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      ""
+                    ],
+                    "type": "text/javascript",
+                    "packages": {}
+                  }
+                },
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "const body = pm.response.json()",
+                      "",
+                      "pm.environment.set(\"publicToken\", body.data.publicToken)"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "noauth"
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "x-api-key",
+                    "value": "{{x-api-key}}",
+                    "description": "API Key for your Atomic account"
+                  },
+                  {
+                    "key": "x-api-secret",
+                    "value": "{{x-api-secret}}",
+                    "description": "API Secret for your Atomic account"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n\t\"identifier\": \"{{identifier}}\",\n\t\"identity\": {\n\t\t\"firstName\": \"Jane\",\n\t\t\"lastName\": \"Doe\",\n\t\t\"postalCode\": \"12345\",\n\t\t\"address\": \"123 Lane St\",\n\t\t\"address2\": \"Apt 987\",\n\t\t\"city\": \"Provo\",\n\t\t\"state\": \"UT\",\n\t\t\"phone\": \"8011234576\",\n\t\t\"email\": \"jane@example.com\"\n\t},\n\t\"cards\": [\n\t\t{\n\t\t\t\"title\": \"Mastercard Super Card\",\n\t\t\t\"brand\": \"mastercard\",\n\t\t\t\"lastFour\": \"1234\",\n\t\t\t\"expiry\": \"12/23\"\n\t\t}\n\t]\n}"
+                },
+                "url": {
+                  "raw": "{{paylinkApiUrl}}/access-token",
+                  "host": [
+                    "{{paylinkApiUrl}}"
+                  ],
+                  "path": [
+                    "access-token"
+                  ]
+                },
+                "description": "# Create an access token for PayLink Switch Just-in-Time flow\n\nGenerates an access token that will automatically become invalid after 30 minutes.\n\n## Header Values\n\n- `x-api-key`\n    \n- `x-api-secret`\n    \n\nThese values are available in the [Console Settings page](https://console.atomicfi.com/settings/credentials) under Credentials.\n\n## JIT Variaton\n\nThis version of the API will instantiate Transact even though the required details to make a switch haven't been passed to Atomic yet. Listen for the `onDataRequest` clientside event to trigger the follow-up API call to hit the PUT endpoint on `/user`.\n\n## Variables\n\nThis request runs a test after successful completion which stores the `publicToken` in an environment variable to be used in subsequent requests."
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Revoke Access Token",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "x-api-key",
+                "value": "{{x-api-key}}",
+                "description": "API Key for your Atomic account"
+              },
+              {
+                "key": "x-api-secret",
+                "value": "{{x-api-secret}}",
+                "description": "API Secret for your Atomic account"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "{{apiUrl}}/access-token/:publicToken/revoke",
+              "host": [
+                "{{apiUrl}}"
+              ],
+              "path": [
+                "access-token",
+                ":publicToken",
+                "revoke"
+              ],
+              "variable": [
+                {
+                  "key": "publicToken",
+                  "value": "{{publicToken}}"
+                }
+              ]
+            },
+            "description": "# Revoke Access Token\n\nThis endpoint is used to revoke an access token generated, which automatically becomes invalid after 30 minutes.\n\n## Header Values\n\n- `x-api-key` - The API key available in the [Console Settings page](https://console.atomicfi.com/settings/credentials) under Credentials.\n    \n- `x-api-secret` - The API secret available in the [Console Settings page](https://console.atomicfi.com/settings/credentials) under Credentials."
+          },
+          "response": []
+        }
+      ],
+      "description": "# `AccessToken`\n\nThe `/access-token` endpoint is used to create an encrypted token for making calls to the Atomic API from any client side application.\n\n## Use in Postman\n\nAll Requests in this collection will run a Test after the Request is sent and a successful response is received. Within the test, a Collection variable `publicToken` is set. This token can then be used as in headers of subsequent API requests in Postman.\n\n## Create TransactUrls\n\nThere are several variations of a Request which does a similar thing. They make a call to `/access-token`, then in the Test, the publicToken is stored, and a config object is generated using the publicToken and some of the fields required to instantiate Transact. The config object is then stringified and base64 encoded to generate a TransactUrl. This URL is then stored in both an environment variable and output to the Postman Console. Copy and paste this URL into your browser to launch Transact.\n\nThis should serve as a convenient way to test out variations of the config object and provide a means to launch Transact outside of your application.",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              ""
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              ""
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Company",
+      "item": [
+        {
+          "name": "Search",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "x-public-token",
+                "value": "{{publicToken}}",
+                "description": "The `publicToken` issued from a request to create an `AccessToken`.",
+                "type": "text",
+                "disabled": true
+              },
+              {
+                "key": "x-api-key",
+                "value": "{{x-api-key}}",
+                "description": "API Key for your Atomic account",
+                "type": "text"
+              },
+              {
+                "key": "x-api-secret",
+                "value": "{{x-api-secret}}",
+                "description": "API Secret for your Atomic account",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"query\": \"Social Security\"\t\n\t// \"products\": [\n\t// \t// \"deposit\",\n\t// \t// \"verify\",\n\t// \t// \"switch\",\n\t// \t// \"present\"\n\t// ]\n\t// \"scopes\": [\n\t// \t// \"user-link\",\n\t// \t// \"pay-link\"\n\t// ],\n\t// \"tags\": [\n\t// \t\"gig-economy\"\n\t// ],\n\t// \"excludedTags\": [\n\t// \t\"payroll-provider\"\n\t// ] \n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{apiUrl}}/company/search",
+              "host": [
+                "{{apiUrl}}"
+              ],
+              "path": [
+                "company",
+                "search"
+              ]
+            },
+            "description": "Searches for a `Company` using a text `query`. Searches can also be narrowed by passing in a specific `product`."
+          },
+          "response": []
+        },
+        {
+          "name": "Company details",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "x-public-token",
+                "value": "{{publicToken}}",
+                "description": "The `publicToken` issued from a request to create an `AccessToken`.",
+                "disabled": true
+              },
+              {
+                "key": "x-api-key",
+                "value": "{{x-api-key}}",
+                "description": "API Key for your Atomic account"
+              },
+              {
+                "key": "x-api-secret",
+                "value": "{{x-api-secret}}",
+                "description": "API Secret for your Atomic account"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"query\": \"ADP\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{apiUrl}}/company/search",
+              "host": [
+                "{{apiUrl}}"
+              ],
+              "path": [
+                "company",
+                "search"
+              ]
+            },
+            "description": "Searches for a `Company` using a text `query`. Searches can also be narrowed by passing in a specific `product`."
+          },
+          "response": []
+        },
+        {
+          "name": "Search - query with products filter",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "x-public-token",
+                "value": "{{publicToken}}",
+                "description": "The `publicToken` issued from a request to create an `AccessToken`.",
+                "type": "text",
+                "disabled": true
+              },
+              {
+                "key": "Content-Type",
+                "name": "Content-Type",
+                "value": "application/json",
+                "type": "text",
+                "disabled": true
+              },
+              {
+                "key": "x-api-key",
+                "value": "{{x-api-key}}",
+                "type": "text"
+              },
+              {
+                "key": "x-api-secret",
+                "value": "{{x-api-secret}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"query\": \"Walmart\",\n\t\"products\": [\n\t\t\"deposit\",\n\t\t\"verify\"\n\t]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{apiUrl}}/company/search",
+              "host": [
+                "{{apiUrl}}"
+              ],
+              "path": [
+                "company",
+                "search"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Search - query with tags and excludedTags",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "x-public-token",
+                "value": "{{publicToken}}",
+                "description": "The `publicToken` issued from a request to create an `AccessToken`.",
+                "type": "text",
+                "disabled": true
+              },
+              {
+                "key": "Content-Type",
+                "name": "Content-Type",
+                "value": "application/json",
+                "type": "text",
+                "disabled": true
+              },
+              {
+                "key": "x-api-key",
+                "value": "{{x-api-key}}",
+                "type": "text"
+              },
+              {
+                "key": "x-api-secret",
+                "value": "{{x-api-secret}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"query\": \"Walmart\",\n\t\"tags\": [\n\t\t\"gig-economy\"\n\t],\n\t\"excludedTags\": [\n\t\t\"payroll-provider\"\n\t] \n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{apiUrl}}/company/search",
+              "host": [
+                "{{apiUrl}}"
+              ],
+              "path": [
+                "company",
+                "search"
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "description": "# `Company`\n\nThe `/company/search` endpoint is for providing the search experience for both Atomic and Atomic's customers. You can use this endpoint to build out a search experience if you'd prefer to use a customer UI as opposed to the Atomic experience.\n\n## Options\n\nThe search requires a query string at a minimum, but you can also filter the results a few different ways, if that is desired. There are example requests showcasing the filters:\n\n- product\n    \n- product array - preferred over product for future-proofing\n    \n- tags array\n    \n- excludedTags array\n    \n\n## Security\n\nBecause the search can be run either server side or client side, you have the ability to utilize a `publicToken` or `x-api-key` and `x-api-secret` in the headers to this endpoint.",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              ""
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              ""
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Verify",
+      "item": [
+        {
+          "name": "Deposit Accounts",
+          "item": [
+            {
+              "name": "Deposit Accounts",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "x-api-key",
+                    "type": "text",
+                    "value": "{{x-api-key}}"
+                  },
+                  {
+                    "key": "x-api-secret",
+                    "value": "{{x-api-secret}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{apiUrl}}/deposit-accounts/:identifier",
+                  "host": [
+                    "{{apiUrl}}"
+                  ],
+                  "path": [
+                    "deposit-accounts",
+                    ":identifier"
+                  ],
+                  "variable": [
+                    {
+                      "key": "identifier",
+                      "value": "{{identifier}}"
+                    }
+                  ]
+                },
+                "description": "Searches for a `Company` using a text `query`. Searches can also be narrowed by passing in a specific `product`."
+              },
+              "response": []
+            }
+          ],
+          "description": "# `Verify`\n\n## Deposit Accounts\n\nA `Deposit account`, in the context of the Atomic Financial system, refers to a direct deposit allocation in a payroll system. A deposit account consists of information such as account and routing numbers, type of account, bank name, distribution type, etc.\n\nThis information will be synced to the Atomic system when an end user runs a Verify task and allows for this data to be pulled. A snapshot is then stored in Atomic which is what this endpoint then serves. You can pair this with Continuous Access to have the Deposit Accounts checked regularly for any modifications, if that is required for your use case.\n\n### To enable:\n\nYou will need to be toggle this feature on in the [Features section of the Settings page of Console](https://console.atomicfi.com/settings/features) to be able to work with this data."
+        },
+        {
+          "name": "Employment",
+          "item": [
+            {
+              "name": "Employment",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "x-api-key",
+                    "value": "{{x-api-key}}",
+                    "type": "text"
+                  },
+                  {
+                    "key": "x-api-secret",
+                    "value": "{{x-api-secret}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{apiUrl}}/employment/:identifier",
+                  "host": [
+                    "{{apiUrl}}"
+                  ],
+                  "path": [
+                    "employment",
+                    ":identifier"
+                  ],
+                  "variable": [
+                    {
+                      "key": "identifier",
+                      "value": "{{identifier}}"
+                    }
+                  ]
+                },
+                "description": "Searches for a `Company` using a text `query`. Searches can also be narrowed by passing in a specific `product`."
+              },
+              "response": []
+            }
+          ],
+          "description": "# `Verify`\n\n## Employment\n\n`Employment`, in the context of the Atomic Financial system, refers to the data referring to the end user's employment as it is in the payroll system. This can consist of information such as the type of employment, whether they are actively employed at this particular company, their title, data about the employer, etc.\n\nThis information will be synced to the Atomic system when an end user runs a Verify task and allows for this data to be pulled. A snapshot is then stored in Atomic which is what this endpoint then serves. You can pair this with Continuous Access to have the end user's Employment checked regularly for any modifications, if that is required for your use case.\n\n### To enable:\n\nYou will need to be toggle this feature on in the [Features section of the Settings page of Console](https://console.atomicfi.com/settings/features) to be able to work with this data."
+        },
+        {
+          "name": "Identity",
+          "item": [
+            {
+              "name": "Identity",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "x-api-key",
+                    "type": "text",
+                    "value": "{{x-api-key}}"
+                  },
+                  {
+                    "key": "x-api-secret",
+                    "value": "{{x-api-secret}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{apiUrl}}/identity/:identifier",
+                  "host": [
+                    "{{apiUrl}}"
+                  ],
+                  "path": [
+                    "identity",
+                    ":identifier"
+                  ],
+                  "variable": [
+                    {
+                      "key": "identifier",
+                      "value": "{{identifier}}"
+                    }
+                  ]
+                },
+                "description": "Searches for a `Company` using a text `query`. Searches can also be narrowed by passing in a specific `product`."
+              },
+              "response": []
+            }
+          ],
+          "description": "# `Verify`\n\n## Identity\n\n`Identity`, in the context of the Atomic Financial system, refers to the data containing to the end user's identity as it is in the payroll system. This can consist of information such as first name, last name, DoB, email address, etc.\n\nThis information will be synced to the Atomic system when an end user runs a Verify task and allows for this data to be pulled. A snapshot is then stored in Atomic which is what this endpoint then serves. You can pair this with Continuous Access to have the Identity data checked regularly for any modifications, if that is required for your use case.\n\n### To enable:\n\nYou will need to be toggle this feature on in the [Features section of the Settings page of Console](https://console.atomicfi.com/settings/features) to be able to work with this data."
+        },
+        {
+          "name": "Income",
+          "item": [
+            {
+              "name": "Income",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "x-api-key",
+                    "type": "text",
+                    "value": "{{x-api-key}}"
+                  },
+                  {
+                    "key": "x-api-secret",
+                    "value": "{{x-api-secret}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{apiUrl}}/income/:identifier",
+                  "host": [
+                    "{{apiUrl}}"
+                  ],
+                  "path": [
+                    "income",
+                    ":identifier"
+                  ],
+                  "variable": [
+                    {
+                      "key": "identifier",
+                      "value": "{{identifier}}"
+                    }
+                  ]
+                },
+                "description": "Searches for a `Company` using a text `query`. Searches can also be narrowed by passing in a specific `product`."
+              },
+              "response": []
+            }
+          ],
+          "description": "# `Verify`\n\n## Income\n\n`Income`, in the context of the Atomic Financial system, refers to the data containing to the end user's income information as it is in the payroll system. This can consist of data such as income, hourly rate, paycycle, etc.\n\nThis information will be synced to the Atomic system when an end user runs a Verify task and allows for this data to be pulled. A snapshot is then stored in Atomic which is what this endpoint then serves. You can pair this with Continuous Access to have the Income data checked regularly for any modifications, if that is required for your use case.\n\n### To enable:\n\nYou will need to be toggle this feature on in the [Features section of the Settings page of Console](https://console.atomicfi.com/settings/features) to be able to work with this data."
+        },
+        {
+          "name": "Statements",
+          "item": [
+            {
+              "name": "Statements",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "x-api-key",
+                    "type": "text",
+                    "value": "{{x-api-key}}"
+                  },
+                  {
+                    "key": "x-api-secret",
+                    "value": "{{x-api-secret}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{apiUrl}}/statements/:identifier",
+                  "host": [
+                    "{{apiUrl}}"
+                  ],
+                  "path": [
+                    "statements",
+                    ":identifier"
+                  ],
+                  "variable": [
+                    {
+                      "key": "identifier",
+                      "value": "{{identifier}}",
+                      "description": "ir-2fae5318-3158-4c5e-8be1-15515f094be5"
+                    }
+                  ]
+                },
+                "description": "Searches for a `Company` using a text `query`. Searches can also be narrowed by passing in a specific `product`."
+              },
+              "response": []
+            }
+          ],
+          "description": "# `Verify`\n\n## Statements\n\n`Statements`, in the context of the Atomic Financial system, refers to detailed data about the end user's payroll information as it is in the payroll system. This can consist of data such as pay date, payperiod start and end dates, net and gross amounts, deductions, and references to the paystub needed to pull those forms from the Atomic system.\n\nThis information will be synced to the Atomic system when an end user runs a Verify task and allows for this data to be pulled. A snapshot is then stored in Atomic which is what this endpoint then serves. You can pair this with Continuous Access to have the Statements data checked regularly for any modifications, if that is required for your use case.\n\n### To enable:\n\nYou will need to be toggle this feature on in the [Features section of the Settings page of Console](https://console.atomicfi.com/settings/features) to be able to work with this data."
+        },
+        {
+          "name": "Taxes",
+          "item": [
+            {
+              "name": "Taxes",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "x-api-key",
+                    "type": "text",
+                    "value": "{{x-api-key}}"
+                  },
+                  {
+                    "key": "x-api-secret",
+                    "value": "{{x-api-secret}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{apiUrl}}/taxes/:identifier",
+                  "host": [
+                    "{{apiUrl}}"
+                  ],
+                  "path": [
+                    "taxes",
+                    ":identifier"
+                  ],
+                  "variable": [
+                    {
+                      "key": "identifier",
+                      "value": "{{identifier}}"
+                    }
+                  ]
+                },
+                "description": "Searches for a `Company` using a text `query`. Searches can also be narrowed by passing in a specific `product`."
+              },
+              "response": []
+            }
+          ],
+          "description": "# `Verify`\n\n## Taxes\n\n`Taxes`, in the context of the Atomic Financial system, refers to detailed data about the end user's tax data as it is in the payroll system. This can consist of data such as type of tax form available, the tax year, total wages, withholding, codes, and references to the tax forms needed to pull those forms from the Atomic system.\n\nThis information will be synced to the Atomic system when an end user runs a Verify task and allows for this data to be pulled. A snapshot is then stored in Atomic which is what this endpoint then serves. You can pair this with Continuous Access to have the Taxes checked regularly for any modifications, if that is required for your use case.\n\n### To enable:\n\nYou will need to be toggle this feature on in the [Features section of the Settings page of Console](https://console.atomicfi.com/settings/features) to be able to work with this data."
+        },
+        {
+          "name": "Timesheets",
+          "item": [
+            {
+              "name": "Timesheets",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "x-api-key",
+                    "type": "text",
+                    "value": "{{x-api-key}}"
+                  },
+                  {
+                    "key": "x-api-secret",
+                    "value": "{{x-api-secret}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{apiUrl}}/timesheets/:identifier",
+                  "host": [
+                    "{{apiUrl}}"
+                  ],
+                  "path": [
+                    "timesheets",
+                    ":identifier"
+                  ],
+                  "variable": [
+                    {
+                      "key": "identifier",
+                      "value": "{{identifier}}"
+                    }
+                  ]
+                },
+                "description": "Searches for a `Company` using a text `query`. Searches can also be narrowed by passing in a specific `product`."
+              },
+              "response": []
+            }
+          ],
+          "description": "# `Verify`\n\n## Timesheets\n\n`Timesheets`, in the context of the Atomic Financial system, refers to detailed data about the end user's timesheet data as it is in the payroll system. This can consist of data such as whether the timesheet has been paid out, duration, date, and clocked in and out times.\n\nThis information will be synced to the Atomic system when an end user runs a Verify task and allows for this data to be pulled. A snapshot is then stored in Atomic which is what this endpoint then serves. You can pair this with Continuous Access to have the Timesheet data checked regularly for any modifications, if that is required for your use case.\n\n### To enable:\n\nYou will need to be toggle this feature on in the [Features section of the Settings page of Console](https://console.atomicfi.com/settings/features) to be able to work with this data."
+        }
+      ],
+      "description": "# Verify\n\nThis folder contains API flows relating to the Atomic Financial UserLink product and it's use cases.\n\nMore details are available on the documentation page of each of the folders within."
+    },
+    {
+      "name": "Continuous Access and Monitoring",
+      "item": [
+        {
+          "name": "Linked Accounts",
+          "item": [
+            {
+              "name": "List Linked Accounts",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "x-api-key",
+                    "value": "{{x-api-key}}",
+                    "type": "text"
+                  },
+                  {
+                    "key": "x-api-secret",
+                    "value": "{{x-api-secret}}",
+                    "type": "text"
+                  },
+                  {
+                    "key": "",
+                    "value": "",
+                    "type": "text",
+                    "disabled": true
+                  }
+                ],
+                "url": {
+                  "raw": "{{apiUrl}}/linked-account/list/:identifier ",
+                  "host": [
+                    "{{apiUrl}}"
+                  ],
+                  "path": [
+                    "linked-account",
+                    "list",
+                    ":identifier "
+                  ],
+                  "variable": [
+                    {
+                      "key": "identifier ",
+                      "value": "{{identifier}}",
+                      "description": "Your internal id used for an end user. Same as used to create the access token."
+                    }
+                  ]
+                },
+                "description": "Searches for a `Company` using a text `query`. Searches can also be narrowed by passing in a specific `product`."
+              },
+              "response": []
+            },
+            {
+              "name": "Resync data using Linked Account",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "x-api-key",
+                    "value": "{{x-api-key}}",
+                    "type": "text"
+                  },
+                  {
+                    "key": "x-api-secret",
+                    "value": "{{x-api-secret}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"tasks\": [\n        {\n            \"product\": \"verify\"\n        }\n    ],\n    \"linkedAccount\": \"{{linkedAccountId}}\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{apiUrl}}/task-workflow/from-linked-account",
+                  "host": [
+                    "{{apiUrl}}"
+                  ],
+                  "path": [
+                    "task-workflow",
+                    "from-linked-account"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Create a Transact URL - Verify Linked Account",
+              "event": [
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      ""
+                    ],
+                    "type": "text/javascript"
+                  }
+                },
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "const body = pm.response.json()",
+                      "",
+                      "const base64String = btoa(JSON.stringify(",
+                      "    {",
+                      "        token: body.data.publicToken,",
+                      "        tasks: [",
+                      "\t\t\t{",
+                      "        \t\tproduct: \"verify\"",
+                      "\t\t\t}",
+                      "\t\t],",
+                      "\t\tlinkedAccount: pm.collectionVariables.get(\"linkedAccountId\")",
+                      "    }",
+                      "))",
+                      "",
+                      "pm.environment.set(\"transactUrlWithToken\", `${pm.environment.get(\"transactUrl\")}/initialize/${base64String}`)",
+                      "",
+                      "pm.environment.set(\"publicToken\", body.data.publicToken)",
+                      "",
+                      "console.log(pm.environment.get(\"transactUrlWithToken\"))"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "noauth"
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "name": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "x-api-key",
+                    "value": "{{x-api-key}}",
+                    "description": "API Key for your Atomic account",
+                    "type": "text"
+                  },
+                  {
+                    "key": "x-api-secret",
+                    "value": "{{x-api-secret}}",
+                    "description": "API Secret for your Atomic account",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n\t\"identifier\": \"{{identifier}}\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{apiUrl}}/access-token",
+                  "host": [
+                    "{{apiUrl}}"
+                  ],
+                  "path": [
+                    "access-token"
+                  ]
+                },
+                "description": "## Usage\n\nThis endpoint makes a call to `/access-token` to create a publicToken using a LinkedAccount.\n\nThe Test in this Request then grabs the publicToken from the Response, stringifies and base64 encodes a config object, and builds a URL. This URL can be used to instantiate Transact using the associated LinkedAccount. It is printed to the Postman Console and stored in the `transactUrlWithToken`environment variable. Copy and paste this string into the URL bar of a browser to launch Transact.\n\nThis is very useful for testing variations of the config object and using LinkedAccounts outside of your application."
+              },
+              "response": []
+            }
+          ],
+          "description": "# `Continuous Access`\n\n## Linked Account\n\nA `Linked Account` refers to the logical container in the Atomic system which holds the necessary data for Atomic to maintain the persistent connection.  \n\nWhen Linked Accounts are enabled in your Atomic instance, each time a user successfully authenticates through Transact, a new Linked Account is created in Atomic. This will have a `linkedAccount._id` which is how you will be able to use this persistent connection.\n\nWhen the scheduled job is run for a LinkedAccount, if a difference from the last run for that LinkedAccount is detected, a snapshot of the data is taken and a webhook is sent out to any endpoints listening for the relevant webhooks. The data snapshot will also replace the data which is available via a call to the corresponding API endpoint."
+        }
+      ],
+      "description": "# `Continuous Access`\n\nThis folder contains API flows relating to the Atomic Financial Continuous Access product and it's use cases.\n\nContinuous Access refers to the Atomic product in which a user or employer grants permission for Atomic to maintain a persistent connection to a payroll system in order to monitor for updates to the state of the payroll system. Depending on the data being accessed, there are varying schedules with which Atomic reverifies the data on-file. If a change is detected, then the snapshot in the Atomic system is updated and the correlating webhooks are sent out. This new snapshot of data is what will be available when the corresponding API is hit to retrieve the data.\n\nThere is also an API to trigger a check of the data on-demand."
+    },
+    {
+      "name": "Task",
+      "item": [
+        {
+          "name": "Task status",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "x-api-key",
+                "value": "{{x-api-key}}",
+                "type": "text"
+              },
+              {
+                "key": "x-api-secret",
+                "value": "{{x-api-secret}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{apiUrl}}/task/6900e20ec5ed8140fb327f4c/status",
+              "host": [
+                "{{apiUrl}}"
+              ],
+              "path": [
+                "task",
+                "6900e20ec5ed8140fb327f4c",
+                "status"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Task details",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "x-api-key",
+                "value": "{{x-api-key}}"
+              },
+              {
+                "key": "x-api-secret",
+                "value": "{{x-api-secret}}"
+              }
+            ],
+            "url": {
+              "raw": "{{apiUrl}}/task/6900e20ec5ed8140fb327f4c/details",
+              "host": [
+                "{{apiUrl}}"
+              ],
+              "path": [
+                "task",
+                "6900e20ec5ed8140fb327f4c",
+                "details"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Generate File URL",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "x-api-key",
+                "value": "{{x-api-key}}",
+                "type": "text"
+              },
+              {
+                "key": "x-api-secret",
+                "value": "{{x-api-secret}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{apiUrl}}/task/:taskId/file/:fileId/generate-url",
+              "host": [
+                "{{apiUrl}}"
+              ],
+              "path": [
+                "task",
+                ":taskId",
+                "file",
+                ":fileId",
+                "generate-url"
+              ],
+              "variable": [
+                {
+                  "key": "taskId",
+                  "value": "{{taskId}}"
+                },
+                {
+                  "key": "fileId",
+                  "value": "{{fileId}}"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "description": "# `Task`\n\nA `Task` refers to the unit of work in the Atomic system which begins with a successful authentication of an end user in a payroll system. This folder contains API endpoints to provide functionality around the Tasks which your users instatiate in the Atomic system.\n\n### Task status\n\nThis endpoint returns the status of a Task as well as the fail reason if the Task was unsuccessful. See the [Docs](https://docs.atomicfi.com/reference/webhooks#tasks__task-failures) for more detail on the various `failReason`s. The required Task `_id`can be found in several of the interaction events emitted in Transact or in the Task related webhooks sent out when Task events occur in the Atomic system.\n\n### Task prescreen\n\nThis endpoint serves to provide a predicted conversion confidence for a provided company going through the Atomic Verify flow. This endpoint will need to be enabled by your Customer Service Manager.\n\n### Generate a file URL\n\nMany uses cases, especially Verify use cases, require PDFs or other documents to be downloaded to your system. This endpoint is the means to do just that. When these files are received from the payroll system, Atomic generates a presigned URL which can be used to retrieve the document. These URLs are only available for 1 hour. Hitting this endpoint with the TaskId and the fileId - sent out via the corresponding webhooks when Atomic received the document - generates a new URL and starts the clock over at 1 hour so that the document can be retrieved.",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              ""
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              ""
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "User",
+      "item": [
+        {
+          "name": "User Tasks",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "x-api-key",
+                "value": "{{x-api-key}}"
+              },
+              {
+                "key": "x-api-secret",
+                "value": "{{x-api-secret}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{apiUrl}}/user/:identifier/tasks",
+              "host": [
+                "{{apiUrl}}"
+              ],
+              "path": [
+                "user",
+                ":identifier",
+                "tasks"
+              ],
+              "variable": [
+                {
+                  "key": "identifier",
+                  "value": "{{identifier}}"
+                }
+              ]
+            },
+            "description": "# Get User Tasks\n\nThe API endpoint retrieves the tasks associated with a specific user identified by the \"identifier\". The response is in JSON format and has a status code of 200.\n\n``` json\n{\n  \"type\": \"object\",\n  \"properties\": {\n    \"data\": {\n      \"type\": \"object\",\n      \"properties\": {\n        \"tasks\": {\n          \"type\": \"array\",\n          \"items\": {\n            \"type\": \"object\",\n            \"properties\": {\n              \"_id\": {\n                \"type\": \"string\"\n              },\n              \"product\": {\n                \"type\": \"string\"\n              },\n              \"status\": {\n                \"type\": \"string\"\n              },\n              \"payrollDataAvailable\": {\n                \"type\": \"boolean\"\n              },\n              \"createdAt\": {\n                \"type\": \"string\"\n              },\n              \"authenticated\": {\n                \"type\": \"boolean\"\n              }\n            }\n          }\n        }\n      }\n    }\n  }\n}\n\n ```"
+          },
+          "response": []
+        },
+        {
+          "name": "Update user details",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "x-api-key",
+                "value": "{{x-api-key}}"
+              },
+              {
+                "key": "x-api-secret",
+                "value": "{{x-api-secret}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"identifier\": \"{{identifier}}\",\n  \"data\": {\n    \"account\": {\n      \"accountNumber\": \"220000000\",\n      \"routingNumber\": \"110000000\",\n      \"type\": \"checking\",\n      \"title\": \"Premier Plus Checking\"\n    }\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{apiUrl}}/user",
+              "host": [
+                "{{apiUrl}}"
+              ],
+              "path": [
+                "user"
+              ]
+            },
+            "description": "# Put User details\n\nThis endpoint allows you to update user information via an HTTP PUT request to {{apiUrl}}/user.\n\n### Request Body\n\nThe request should include a JSON payload with the following structure:\n\n``` json\n{\n    \"identifier\": \"{{identifier}}\",\n    \"data\": {\n        \"account\": {\n            \"accountNumber\": \"220000000\",\n            \"routingNumber\": \"110000000\",\n            \"type\": \"checking\",\n            \"title\": \"Premier Plus Checking\"\n        }\n    }\n}\n\n ```\n\n### Response\n\nThe response to this request will be in the form of a JSON schema with a status code of 200 and a content type of `application/json`. The response schema will be:\n\n``` json\n{\n    \"type\": \"object\",\n    \"properties\": {\n        \"success\": {\n            \"type\": \"boolean\"\n        }\n    }\n}\n\n ```"
+          },
+          "response": []
+        },
+        {
+          "name": "Update user details - PayLink",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "x-api-key",
+                "value": "{{x-api-key}}"
+              },
+              {
+                "key": "x-api-secret",
+                "value": "{{x-api-secret}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n\t\"identifier\": \"{{identifier}}\",\n\t\"data\": {\n\t\t\"card\": {\n\t\t\t\"title\": \"Mastercard Super Card\",\n\t\t\t\"number\": \"4242424242424242\",\n\t\t\t\"expiry\": \"12/23\",\n\t\t\t\"cvv\": \"123\"\n\t\t}\n\t}\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{paylinkApiUrl}}/user",
+              "host": [
+                "{{paylinkApiUrl}}"
+              ],
+              "path": [
+                "user"
+              ]
+            },
+            "description": "### Put User details for PayLink Tasks\n\nThis endpoint is used to update user information.\n\n#### Request Body\n\n- `identifier` (string) - The identifier for the user.\n    \n- `data` (object)\n    \n    - `cards` (array)\n        \n        - `title` (string) - The title of the card.\n            \n        - `number` (string) - The card number.\n            \n        - `expiry` (string) - The expiry date of the card.\n            \n        - `cvv` (string) - The CVV of the card.\n            \n\n#### Response\n\nThe response is in JSON format with the following schema:\n\n``` json\n{\n  \"type\": \"\",\n  \"message\": \"\",\n  \"data\": {\n    \"errors\": [\"\"]\n  }\n}\n\n ```"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Secrets",
+      "item": [
+        {
+          "name": "Get API Secrets",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "x-api-key",
+                "value": "{{x-api-key}}"
+              },
+              {
+                "key": "x-api-secret",
+                "value": "{{x-api-secret}}"
+              }
+            ],
+            "url": {
+              "raw": "{{apiUrl}}/secrets",
+              "host": [
+                "{{apiUrl}}"
+              ],
+              "path": [
+                "secrets"
+              ]
+            },
+            "description": "# Get API Secrets\n\nThe `GET` request to `/secrets` endpoint retrieves a JSON response containing an array of `secrets` objects. Each `secrets` object includes the following properties:\n\n- `_id` (string): The unique identifier for the secret.\n    \n- `createdAt` (string): The timestamp indicating when the secret was created.\n    \n- `endpoints` (array): An array of endpoint objects, each containing the following properties:\n    \n    - `_id` (string): The unique identifier for the endpoint.\n        \n    - `url` (string): The URL of the endpoint.\n        \n    - `eventTypes` (array): An array of event types associated with the endpoint.\n        \n\nHere is the JSON schema for the response:\n\n``` json\n{\n  \"type\": \"object\",\n  \"properties\": {\n    \"data\": {\n      \"type\": \"object\",\n      \"properties\": {\n        \"secrets\": {\n          \"type\": \"array\",\n          \"items\": {\n            \"type\": \"object\",\n            \"properties\": {\n              \"_id\": { \"type\": \"string\" },\n              \"createdAt\": { \"type\": \"string\" },\n              \"endpoints\": {\n                \"type\": \"array\",\n                \"items\": {\n                  \"type\": \"object\",\n                  \"properties\": {\n                    \"_id\": { \"type\": \"string\" },\n                    \"url\": { \"type\": \"string\" },\n                    \"eventTypes\": {\n                      \"type\": \"array\",\n                      \"items\": { \"type\": \"string\" }\n                    }\n                  }\n                }\n              }\n            }\n          }\n        }\n      }\n    }\n  }\n}\n}\n\n ```"
+          },
+          "response": []
+        },
+        {
+          "name": "Create API Secret",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "x-api-key",
+                "value": "{{x-api-key}}"
+              },
+              {
+                "key": "x-api-secret",
+                "value": "{{x-api-secret}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n\t\"name\": \"treys secret\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{apiUrl}}/secrets",
+              "host": [
+                "{{apiUrl}}"
+              ],
+              "path": [
+                "secrets"
+              ]
+            },
+            "description": "# Create API Secret\n\nThis endpoint allows you to create a new secret by sending an HTTP POST request to {{apiUrl}}/secrets. The request should include a raw payload in the request body with the name of the secret.\n\n### Request Body\n\n- name (string, required): The name of the secret.\n    \n\n#### Example\n\n``` json\n{\n    \"name\": \"treys secret\"\n}\n\n ```\n\n### Response\n\nUpon a successful request, the server will respond with a status code of 200 and a JSON object containing the newly created secret's data. The response will include the secret's ID, creation timestamp, name, and a token.\n\n#### Example Response\n\n``` json\n{\n    \"data\": {\n        \"secret\": {\n            \"_id\": \"\",\n            \"createdAt\": \"\",\n            \"name\": \"\",\n            \"token\": \"\"\n        }\n    }\n}\n\n ```"
+          },
+          "response": []
+        },
+        {
+          "name": "Delete API Secret",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "x-api-key",
+                "value": "{{x-api-key}}"
+              },
+              {
+                "key": "x-api-secret",
+                "value": "{{x-api-secret}}"
+              }
+            ],
+            "url": {
+              "raw": "{{apiUrl}}/secrets/:secretId",
+              "host": [
+                "{{apiUrl}}"
+              ],
+              "path": [
+                "secrets",
+                ":secretId"
+              ],
+              "variable": [
+                {
+                  "key": "secretId",
+                  "value": "{{secretId}}"
+                }
+              ]
+            },
+            "description": "# Delete Secret\n\nThis endpoint is used to delete a specific secret identified by the `secretId`.\n\n#### Request\n\n- Method: DELETE\n    \n- URL: `{{apiUrl}}/secrets/:secretId`\n    \n\n#### Response\n\n- Status: 200\n    \n- Content-Type: application/json\n    \n- { \"success\": true }\n    \n\n#### Request Body\n\nThis request does not require a request body.\n\n#### Response Schema\n\n``` json\n{\n    \"type\": \"object\",\n    \"properties\": {\n        \"success\": {\n            \"type\": \"boolean\"\n        }\n    },\n    \"required\": [\"success\"]\n}\n\n ```"
+          },
+          "response": []
+        },
+        {
+          "name": "Get JWE public keys",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const body = pm.response.json()",
+                  "console.log(body)",
+                  "pm.environment.set(\"x-enc-key-id\", body.data[0][\"_id\"])",
+                  "pm.environment.set(\"jwePublicKey\", body.data[0].publicKey)"
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "x-api-key",
+                "value": "{{x-api-key}}"
+              },
+              {
+                "key": "x-api-secret",
+                "value": "{{x-api-secret}}"
+              }
+            ],
+            "url": {
+              "raw": "{{apiUrl}}/secrets/jwe-public-keys",
+              "host": [
+                "{{apiUrl}}"
+              ],
+              "path": [
+                "secrets",
+                "jwe-public-keys"
+              ]
+            },
+            "description": "# Get JWE Secrets\n\nThis endpoint is used to get the allocate JSON Web Encryption Secret for a customer within the associated environment.\n\n#### Request\n\n- Method: GET\n    \n- [URL: <code>https://api.atomicfi.com/secrets/jwe-public-keys</code>](https://api.atomicfi.com/secrets/jwe-publi)"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Webhooks",
+      "item": [
+        {
+          "name": "Create Endpoint",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "x-api-key",
+                "value": "{{x-api-key}}"
+              },
+              {
+                "key": "x-api-secret",
+                "value": "{{x-api-secret}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n\t\"url\": \"YOUR_WEBHOOK_ENDPOINT_URL\",\n\t\"secretId\": \"SECRET_ID\",\n\t\"eventTypes\": [\n\t\t\"task-status-updated\"\n\t]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{apiUrl}}/webhooks/endpoints",
+              "host": [
+                "{{apiUrl}}"
+              ],
+              "path": [
+                "webhooks",
+                "endpoints"
+              ]
+            },
+            "description": "# Post Webhooks Endpoint\n\nThis endpoint is used to create a new webhook endpoint.\n\n#### Request\n\n- Method: POST\n    \n- URL: {{apiUrl}}/webhooks/endpoints\n    \n- Body:\n    \n    - `url` (text): The URL to which the webhook events will be sent.\n        \n    - `secretId` (text): A unique identifier to authenticate the webhook events.\n        \n    - `eventTypes` (array): An array of event types for which the webhook should listen.\n        \n\n#### Response\n\nThe response is in JSON format and follows the schema below:\n\n``` json\n{\n  \"type\": \"object\",\n  \"properties\": {\n    \"data\": {\n      \"type\": \"object\",\n      \"properties\": {\n        \"endpoint\": {\n          \"type\": \"object\",\n          \"properties\": {\n            \"url\": {\n              \"type\": \"string\"\n            },\n            \"secretId\": {\n              \"type\": \"string\"\n            },\n            \"eventTypes\": {\n              \"type\": \"array\",\n              \"items\": {\n                \"type\": \"string\"\n              }\n            },\n            \"_id\": {\n              \"type\": \"string\"\n            }\n          }\n        }\n      }\n    }\n  }\n}\n\n ```"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Endpoints",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "x-api-key",
+                "value": "{{x-api-key}}"
+              },
+              {
+                "key": "x-api-secret",
+                "value": "{{x-api-secret}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{apiUrl}}/webhooks/endpoints",
+              "host": [
+                "{{apiUrl}}"
+              ],
+              "path": [
+                "webhooks",
+                "endpoints"
+              ]
+            },
+            "description": "# Get Webhook Endpoints\n\nThis endpoint is used to create a get all webhook endpoint in the associated environment and customer instance.\n\n#### Request\n\n- Method: GET\n    \n- URL: {{apiUrl}}/webhooks/endpoints\n    \n\nHere's a JSON schema representing the response:\n\n``` json\n{\n  \"type\": \"object\",\n  \"properties\": {\n    \"data\": {\n      \"type\": \"object\",\n      \"properties\": {\n        \"endpoints\": {\n          \"type\": \"array\",\n          \"items\": {\n            \"type\": \"object\",\n            \"properties\": {\n              \"url\": { \"type\": \"string\" },\n              \"secretId\": { \"type\": \"string\" },\n              \"eventTypes\": {\n                \"type\": \"array\",\n                \"items\": { \"type\": \"string\" }\n              },\n              \"_id\": { \"type\": \"string\" }\n            }\n          }\n        }\n      }\n    }\n  }\n}\n\n ```"
+          },
+          "response": []
+        },
+        {
+          "name": "Update Endpoint",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "x-api-key",
+                "value": "{{x-api-key}}"
+              },
+              {
+                "key": "x-api-secret",
+                "value": "{{x-api-secret}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n\t\"url\": \"YOUR_WEBHOOK_ENDPOINT_URL\",\n\t\"secretId\": \"SECRET_ID\",\n\t\"eventTypes\": [\n\t\t\"task-status-updated\"\n\t]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{apiUrl}}/webhooks/endpoints/:endpointId",
+              "host": [
+                "{{apiUrl}}"
+              ],
+              "path": [
+                "webhooks",
+                "endpoints",
+                ":endpointId"
+              ],
+              "variable": [
+                {
+                  "key": "endpointId",
+                  "value": "{{endpointId}}"
+                }
+              ]
+            },
+            "description": "# Update Webhook Endpoint\n\nThis endpoint allows you to update a specific webhook endpoint by providing the endpoint ID.\n\n#### Request\n\n- Method: PUT\n    \n- Endpoint: {{apiUrl}}/webhooks/endpoints/:endpointId\n    \n\n##### Request Body\n\n- Type: Raw (application/json)\n    \n    - `url`: The URL of the webhook endpoint\n        \n    - `secretId`: The secret ID for the webhook endpoint\n        \n    - `eventTypes`: An array of event types to subscribe to\n        \n\n#### Response\n\nThe response is in JSON format and follows the schema below:\n\n``` json\n{\n  \"type\": \"object\",\n  \"properties\": {\n    \"data\": {\n      \"type\": \"object\",\n      \"properties\": {\n        \"endpoint\": {\n          \"type\": \"object\",\n          \"properties\": {\n            \"url\": { \"type\": \"string\" },\n            \"secretId\": { \"type\": \"string\" },\n            \"eventTypes\": {\n              \"type\": \"array\",\n              \"items\": { \"type\": \"string\" }\n            },\n            \"_id\": { \"type\": \"string\" }\n          }\n        }\n      }\n    }\n  }\n}\n\n ```"
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Endpoint",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "x-api-key",
+                "value": "{{x-api-key}}"
+              },
+              {
+                "key": "x-api-secret",
+                "value": "{{x-api-secret}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{apiUrl}}/webhooks/endpoints/:endpointId",
+              "host": [
+                "{{apiUrl}}"
+              ],
+              "path": [
+                "webhooks",
+                "endpoints",
+                ":endpointId"
+              ],
+              "variable": [
+                {
+                  "key": "endpointId",
+                  "value": "{{endpointId}}"
+                }
+              ]
+            },
+            "description": "# Delete Webhook Endpoint\n\nThis endpoint is used to delete a specific webhook endpoint by providing the `endpointId` in the URL path.\n\n#### Request Body\n\nThis request does not require a request body.\n\n#### Response\n\n- Status: 200\n    \n- Content-Type: application/json\n    \n\n##### Success Response\n\n``` json\n{\n    \"success\": true\n}\n\n ```"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Health",
+      "item": [
+        {
+          "name": "Health check",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "x-api-key",
+                "value": "{{x-api-key}}",
+                "description": "API Key for your Atomic account"
+              },
+              {
+                "key": "x-api-secret",
+                "value": "{{x-api-secret}}",
+                "description": "API Secret for your Atomic account"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "{{apiUrl}}/health",
+              "host": [
+                "{{apiUrl}}"
+              ],
+              "path": [
+                "health"
+              ]
+            },
+            "description": "# Get Health Check\n\nThis endpoint sends a GET request to `{{apiUrl}}/health` to perform a health check of the system.\n\n## Header Values\n\n- `x-api-key` - The API key for authentication\n    \n- `x-api-secret` - The API secret for authentication\n    \n\nThese values can be found in the [Console Settings page](https://console.atomicfi.com/settings/credentials) under Credentials.\n\n## Header Values\n\n- `x-api-key` - The API key for authentication.\n    \n- `x-api-secret` - The API secret for authentication.\n    \n\nThese values can be found in the [Console Settings page](https://console.atomicfi.com/settings/credentials) under Credentials.\n\n## Response\n\nUpon successful execution, the API returns a status code of 200 and the content type is `application/json`. The response body contains the health status in the following format:\n\n``` json\n{\n    \"status\": \"\",\n    \"checks\": [\n        {\n            \"name\": \"\",\n            \"state\": \"\",\n            \"data\": {\n                \"reason\": \"\"\n            }\n        }\n    ]\n}\n\n ```\n\nThe `status` field indicates the overall health status, and the `checks` array provides detailed information about individual health checks. Each check includes a `name`, `state`, and `data` object with a `reason` field.\n\nThis request does not require a request body as it is a GET request."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Prescreen",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "x-api-key",
+            "value": "{{x-api-key}}",
+            "type": "text"
+          },
+          {
+            "key": "x-api-secret",
+            "value": "{{x-api-secret}}",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n   \"identifier\": \"650\",\n   \"identity\": {\n       \"ssn\": \"789627199\",\n       \"dateOfBirth\": \"1960-01-01\",\n       \"phone\": \"8013687618\",\n       \"email\": \"chris.robbins@atomicfi.com\"\n   }\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{apiUrl}}/pre-screen",
+          "host": [
+            "{{apiUrl}}"
+          ],
+          "path": [
+            "pre-screen"
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "identifier",
+      "value": "trey@atomicfi.com"
+    },
+    {
+      "key": "publicToken",
+      "value": "publicToken"
+    },
+    {
+      "key": "taskId",
+      "value": ""
+    },
+    {
+      "key": "linkedAccountId",
+      "value": ""
+    },
+    {
+      "key": "employeeId",
+      "value": ""
+    },
+    {
+      "key": "employerId",
+      "value": ""
+    },
+    {
+      "key": "employerDocId",
+      "value": ""
+    },
+    {
+      "key": "payrollRunId",
+      "value": ""
+    },
+    {
+      "key": "deductionRequestId",
+      "value": ""
+    },
+    {
+      "key": "taskWorkflowId",
+      "value": "taskWorkflowId"
+    },
+    {
+      "key": "secretId",
+      "value": "secretId"
+    },
+    {
+      "key": "endpointId",
+      "value": "endpointId"
+    },
+    {
+      "key": "encryptionKeyId",
+      "value": "encryptionKeyId"
+    }
+  ]
+}
